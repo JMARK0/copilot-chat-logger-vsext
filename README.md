@@ -58,36 +58,59 @@ Configure the extension through VS Code settings:
 
 ## Log Format
 
-Logs are stored in JSON format with the following structure:
+The logs follow TypeScript interfaces with the following structure:
 
-\`\`\`json
-{
-    "summary": {
-        "totalInteractions": 42,
-        "dateRange": {
-            "earliest": "2025-09-06T10:00:00.000Z",
-            "latest": "2025-09-06T15:30:00.000Z"
-        }
-    },
-    "interactions": [
+\`\`\`typescript
+interface ChatInteraction {
+    id: string;                     // Unique identifier for the interaction
+    timestamp: Date;                // When the interaction occurred
+    type: 'prompt' | 'response' | 'context';  // Type of interaction
+    content: string;                // The actual message content
+    source: 'user' | 'copilot' | 'system';   // Who generated the message
+    metadata?: {
+        model?: string;             // The model used (e.g., 'gpt-4')
+        tokens?: number;            // Number of tokens in the message
+        participants?: string[];     // List of participants
+        location?: 'chat' | 'inline' | 'quick-chat';  // Where the interaction occurred
+    };
+}
+
+interface LogExport {
+    exportDate: string;             // When the log was exported
+    totalInteractions: number;      // Total number of interactions
+    interactions: ChatInteraction[]; // Array of all interactions
+}
+\`\`\`
+
+### Example Log Output:
+
+\`\`\`typescript
+const logExample: LogExport = {
+    exportDate: "2025-09-06T15:30:00.000Z",
+    totalInteractions: 2,
+    interactions: [
         {
-            "timestamp": "2025-09-06T10:00:00.000Z",
-            "type": "prompt",
-            "content": "How do I implement a binary search?",
-            "metadata": {
-                "model": "gpt-4",
-                "location": "chat",
-                "participants": ["user"]
+            id: "1693916400000-abc123def",
+            timestamp: new Date("2025-09-06T10:00:00.000Z"),
+            type: "prompt",
+            content: "How do I implement a binary search?",
+            source: "user",
+            metadata: {
+                model: "gpt-4",
+                location: "chat",
+                participants: ["user"]
             }
         },
         {
-            "timestamp": "2025-09-06T10:00:01.000Z",
-            "type": "response",
-            "content": "Here's how you can implement binary search...",
-            "metadata": {
-                "model": "gpt-4",
-                "location": "chat",
-                "participants": ["assistant"]
+            id: "1693916401000-xyz789uvw",
+            timestamp: new Date("2025-09-06T10:00:01.000Z"),
+            type: "response",
+            content: "Here's how you can implement binary search...",
+            source: "copilot",
+            metadata: {
+                model: "gpt-4",
+                location: "chat",
+                participants: ["assistant"]
             }
         }
     ]
