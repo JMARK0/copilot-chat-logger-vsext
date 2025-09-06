@@ -61,52 +61,100 @@ Configure the extension through VS Code settings:
 The logs follow TypeScript interfaces with the following structure:
 
 \`\`\`typescript
+/**
+ * Represents a single chat interaction between the user and Copilot
+ */
 interface ChatInteraction {
-    id: string;                     // Unique identifier for the interaction
-    timestamp: Date;                // When the interaction occurred
-    type: 'prompt' | 'response' | 'context';  // Type of interaction
-    content: string;                // The actual message content
-    source: 'user' | 'copilot' | 'system';   // Who generated the message
+    /** Unique identifier for the interaction */
+    id: string;
+    
+    /** When the interaction occurred */
+    timestamp: Date;
+    
+    /** Type of the interaction */
+    type: 
+        | 'prompt'    // User's input
+        | 'response'  // Copilot's response
+        | 'context';  // System context
+    
+    /** The actual message content */
+    content: string;
+    
+    /** Source of the message */
+    source: 
+        | 'user'     // From the user
+        | 'copilot'  // From GitHub Copilot
+        | 'system';  // From the system
+    
+    /** Additional metadata about the interaction */
     metadata?: {
-        model?: string;             // The model used (e.g., 'gpt-4')
-        tokens?: number;            // Number of tokens in the message
-        participants?: string[];     // List of participants
-        location?: 'chat' | 'inline' | 'quick-chat';  // Where the interaction occurred
+        /** The AI model used (e.g., 'gpt-4') */
+        model?: string;
+        
+        /** Number of tokens in the message */
+        tokens?: number;
+        
+        /** List of participants in the interaction */
+        participants?: string[];
+        
+        /** Where the interaction occurred */
+        location?: 
+            | 'chat'       // In the chat panel
+            | 'inline'     // Inline code suggestions
+            | 'quick-chat'; // Quick chat features
     };
 }
 
+/**
+ * Structure of the exported log file
+ */
 interface LogExport {
-    exportDate: string;             // When the log was exported
-    totalInteractions: number;      // Total number of interactions
-    interactions: ChatInteraction[]; // Array of all interactions
+    /** ISO timestamp when the log was exported */
+    exportDate: string;
+    
+    /** Total number of recorded interactions */
+    totalInteractions: number;
+    
+    /** Array of all chat interactions */
+    interactions: ChatInteraction[];
 }
 \`\`\`
 
-### Example Log Output:
+### Example Log Output
+
+Below is an example of how the log data looks when exported:
 
 \`\`\`typescript
 const logExample: LogExport = {
+    // When the log was exported
     exportDate: "2025-09-06T15:30:00.000Z",
+    
+    // Number of interactions in the log
     totalInteractions: 2,
+    
+    // Array of recorded interactions
     interactions: [
         {
+            // User asking a question
             id: "1693916400000-abc123def",
             timestamp: new Date("2025-09-06T10:00:00.000Z"),
             type: "prompt",
-            content: "How do I implement a binary search?",
             source: "user",
+            content: "How do I implement a binary search?",
             metadata: {
                 model: "gpt-4",
                 location: "chat",
                 participants: ["user"]
             }
         },
+        
         {
+            // Copilot's response
             id: "1693916401000-xyz789uvw",
             timestamp: new Date("2025-09-06T10:00:01.000Z"),
             type: "response",
-            content: "Here's how you can implement binary search...",
             source: "copilot",
+            content: "Here's how you can implement binary search...",
             metadata: {
                 model: "gpt-4",
                 location: "chat",
