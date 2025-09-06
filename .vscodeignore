@@ -1,0 +1,41 @@
+.vscode/**
+.vscode-test/**
+node_modules/**
+src/**
+test/**
+out/test/**
+**/test/**
+**/*.test.ts
+**/*.test.js
+
+.gitignore
+.yarnrc
+webpack.config.js
+vsc-extension-quickstart.md
+**/tsconfig.json
+**/.eslintrc.json
+**/*.map
+**/*.ts
+!file.ts
+
+# Development files
+.eslintignore
+.npmrc
+.npmignore
+.editorconfig
+.prettierrc
+.prettierignore
+jest.config.js
+coverage/**
+
+# Source control
+.git
+.github
+.gitattributes
+
+# Documentation and examples
+docs/**
+examples/**
+**/*.md
+!README.md
+!LICENSE.md

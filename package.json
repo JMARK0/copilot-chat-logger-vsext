@@ -1,0 +1,167 @@
+{
+    "name": "copilot-chat-logger-v1",
+    "displayName": "GitHub Copilot Chat Logger",
+    "description": "Logs GitHub Copilot chat interactions in a circular buffer for analysis and debugging",
+    "version": "0.1.5",
+    "publisher": "copilot-chat-logger-v1",
+    "engines": {
+        "vscode": "^1.85.0"
+    },
+    "categories": [
+        "Other",
+        "Machine Learning",
+        "Debuggers"
+    ],
+    "keywords": [
+        "github",
+        "copilot",
+        "chat",
+        "logging",
+        "ai",
+        "circular-buffer"
+    ],
+    "activationEvents": [
+        "onStartupFinished"
+    ],
+    "main": "./out/extension.js",
+    "contributes": {
+        "chatParticipants": [
+            {
+                "id": "copilot-logger.interceptor",
+                "name": "logger",
+                "fullName": "Chat Logger",
+                "description": "Log and analyze chat interactions",
+                "isSticky": false,
+                "commands": [
+                    {
+                        "name": "export",
+                        "description": "Export chat logs to file"
+                    },
+                    {
+                        "name": "view",
+                        "description": "View recent chat interactions"
+                    },
+                    {
+                        "name": "clear",
+                        "description": "Clear all stored chat logs"
+                    }
+                ]
+            }
+        ],
+        "commands": [
+            {
+                "command": "copilot-chat-logger-v1.exportLogs",
+                "title": "Export Chat Logs",
+                "category": "Copilot Logger"
+            },
+            {
+                "command": "copilot-chat-logger-v1.clearLogs", 
+                "title": "Clear Chat Logs",
+                "category": "Copilot Logger"
+            },
+            {
+                "command": "copilot-chat-logger-v1.viewLogs",
+                "title": "View Chat Logs",
+                "category": "Copilot Logger"
+            },
+            {
+                "command": "copilot-chat-logger-v1.toggleLogging",
+                "title": "Toggle Logging",
+                "category": "Copilot Logger"
+            }
+        ],
+        "configuration": {
+            "title": "GitHub Copilot Chat Logger",
+            "properties": {
+                "copilot-chat-logger.enableLogging": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Enable automatic logging of chat interactions"
+                },
+                "copilot-chat-logger.bufferSize": {
+                    "type": "number",
+                    "default": 1000,
+                    "minimum": 100,
+                    "maximum": 10000,
+                    "description": "Maximum number of interactions to store in circular buffer"
+                },
+                "copilot-chat-logger.logLevel": {
+                    "type": "string",
+                    "enum": ["minimal", "standard", "verbose"],
+                    "default": "standard",
+                    "description": "Amount of detail to include in logs"
+                },
+                "copilot-chat-logger.autoExport": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Automatically export logs when buffer is full"
+                },
+                "copilot-chat-logger.exportPath": {
+                    "type": "string",
+                    "default": "",
+                    "description": "Default path for log exports (empty = workspace .vscode folder)"
+                }
+            }
+        },
+        "menus": {
+            "commandPalette": [
+                {
+                    "command": "copilot-chat-logger-v1.exportLogs"
+                },
+                {
+                    "command": "copilot-chat-logger-v1.clearLogs"
+                },
+                {
+                    "command": "copilot-chat-logger-v1.viewLogs"
+                },
+                {
+                    "command": "copilot-chat-logger-v1.toggleLogging"
+                }
+            ],
+            "explorer/context": [
+                {
+                    "command": "copilot-chat-logger-v1.exportLogs",
+                    "group": "navigation"
+                }
+            ]
+        }
+    },
+    "scripts": {
+        "vscode:prepublish": "npm run compile",
+        "compile": "tsc -p ./",
+        "watch": "tsc -watch -p ./",
+        "pretest": "npm run compile && npm run lint",
+        "lint": "eslint src --ext ts",
+        "test": "node ./out/test/runTest.js",
+        "package": "vsce package",
+        "publish": "vsce publish"
+    },
+    "devDependencies": {
+        "@types/node": "18.x",
+        "@types/vscode": "^1.85.0",
+        "@typescript-eslint/eslint-plugin": "^6.13.0",
+        "@typescript-eslint/parser": "^6.13.0",
+        "eslint": "^8.54.0",
+        "typescript": "^5.3.0",
+        "@vscode/test-cli": "^0.0.4",
+        "@vscode/test-electron": "^2.3.6",
+        "vsce": "^2.21.1"
+    },
+    "extensionDependencies": [
+        "github.copilot-chat"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/your-username/copilot-chat-logger.git"
+    },
+    "bugs": {
+        "url": "https://github.com/your-username/copilot-chat-logger/issues"
+    },
+    "homepage": "https://github.com/your-username/copilot-chat-logger#readme",
+    "license": "MIT",
+    "icon": "images/icon.png",
+    "galleryBanner": {
+        "color": "#1e1e1e",
+        "theme": "dark"
+    }
+}
